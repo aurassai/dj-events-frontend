@@ -10,6 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 import moment from "moment";
 import Image from "next/image";
 import { FaImage } from "react-icons/fa";
+import ImageUpload from "@/components/ImageUpload";
 
 const EditEventPage = ({ evt }) => {
     const [values, setValues] = useState({
@@ -58,6 +59,13 @@ const EditEventPage = ({ evt }) => {
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setValues({ ...values, [name]: value });
+    };
+
+    const imageUploaded = async (e) => {
+        const res = await fetch(`${API_URL}/events/${evt.id}`);
+        const data = await res.json();
+        setImagePreview(data.image.formats.thumbnail.url);
+        setShowModal(false);
     };
 
     return (
@@ -160,7 +168,7 @@ const EditEventPage = ({ evt }) => {
             </div>
 
             <Modal show={showModal} onClose={() => setShowModal(false)}>
-                IMAGE UPLOAD
+                <ImageUpload evtId={evt.id} imageUploaded={imageUploaded} />
             </Modal>
         </Layout>
     );
