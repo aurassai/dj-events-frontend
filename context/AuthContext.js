@@ -14,6 +14,7 @@ export const AuthProvider = ({ children }) => {
 
     // Register user
     const register = async (user) => {};
+
     // Login user
     const login = async ({ email: identifier, password }) => {
         const res = await fetch(`${NEXT_URL}/api/login`, {
@@ -39,7 +40,14 @@ export const AuthProvider = ({ children }) => {
     };
     // Logout user
     const logout = async () => {
-        console.log("Logout");
+        const res = await fetch(`${NEXT_URL}/api/logout`, {
+            method: "POST",
+        });
+
+        if (res.ok) {
+            setUser(null);
+            router.push("/");
+        }
     };
 
     // Check if user is logged in
